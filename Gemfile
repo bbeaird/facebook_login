@@ -43,3 +43,5 @@ end
 
 gem 'rails_12factor', group: :production
 gem 'pg'
+gem 'koala', '~> 1.10.0rc'
+gem 'dotenv-rails', :groups => [:development, :test]

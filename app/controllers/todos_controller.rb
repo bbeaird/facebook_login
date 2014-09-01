@@ -5,6 +5,11 @@ class TodosController < ApplicationController
   # GET /todos.json
   def index
     @todos = Todo.all
+    @graph = Koala::Facebook::API.new(ENV['FACEBOOK_ACCESS_TOKEN'])
+    p '*'*50
+    p @graph
+    profile = @graph.get_object("me")
+    p profile
   end
 
   # GET /todos/1
