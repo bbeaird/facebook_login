@@ -5,12 +5,22 @@ class TodosController < ApplicationController
   # GET /todos.json
   def index
     @todos = Todo.all
-    @graph = Koala::Facebook::API.new(ENV['FACEBOOK_ACCESS_TOKEN'])
-    p '*'*50
-    profile = @graph.get_object('me')
-    gender_interest = profile['interested_in']
-    feed = @graph.get_connections("me", "feed")
-    ap feed
+    # @graph = Koala::Facebook::API.new(ENV['FACEBOOK_ACCESS_TOKEN'])
+    # p '*'*50
+    # profile = @graph.get_object('me')
+    # gender_interest = profile['interested_in']
+    # feed = @graph.get_connections("me", "feed")
+    # ap feed
+    # response = HTTParty.get('https://api.stackexchange.com/2.2/questions?site=stackoverflow')
+    # p response
+    # p cookies
+    # response123 = HTTParty.get('https://graph.facebook.com/v2.1/me?access_token=CAACEdEose0cBAEuBZBMbeR5nenG9wKZCKP8fSWgCpGlntrQ1TuciOa3wj0pi4dFeI9nRmXZCuYMXc7MkoSnszjWsoy3Jt9O6mG7PD9RbZCXEMlMDuFntaKO2ZAYSnwVamWpIiU3m8avjz9OqG2xqwE9JQgq4PsaolUZCHee4ikZANZBsJq1yoLZBZCHXX25AZBSbZANX9HF9vBAi1ZCNJKwACZAhiLh3GZCgloEOz0ZD&fields=id,name,birthday')
+    # ap response123.body#, response.code, response.message, response.headers.inspect
+    p session
+    @oauth = Koala::Facebook::OAuth.new(ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'])
+    p @oauth
+    p @oauth.get_user_info_from_cookies(cookies)
+    # p @access_token = @oauth.get_user_info_from_cookies(cookies)['access_token'] if @oauth.get_user_info_from_cookies(cookies)
   end
 
   # GET /todos/1

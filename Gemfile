@@ -46,3 +46,5 @@ gem 'pg'
 gem 'koala', '~> 1.10.0rc'
 gem 'dotenv-rails', :groups => [:development, :test]
 gem 'awesome_print'
+gem 'httparty'
+gem 'quiet_assets', :group => :development
