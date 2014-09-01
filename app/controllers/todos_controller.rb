@@ -7,9 +7,10 @@ class TodosController < ApplicationController
     @todos = Todo.all
     @graph = Koala::Facebook::API.new(ENV['FACEBOOK_ACCESS_TOKEN'])
     p '*'*50
-    p @graph
-    profile = @graph.get_object("me")
-    p profile
+    profile = @graph.get_object('me')
+    gender_interest = profile['interested_in']
+    feed = @graph.get_connections("me", "feed")
+    ap feed
   end
 
   # GET /todos/1
