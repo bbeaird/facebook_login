@@ -16,11 +16,23 @@ class TodosController < ApplicationController
     # p cookies
     # response123 = HTTParty.get('https://graph.facebook.com/v2.1/me?access_token=CAACEdEose0cBAEuBZBMbeR5nenG9wKZCKP8fSWgCpGlntrQ1TuciOa3wj0pi4dFeI9nRmXZCuYMXc7MkoSnszjWsoy3Jt9O6mG7PD9RbZCXEMlMDuFntaKO2ZAYSnwVamWpIiU3m8avjz9OqG2xqwE9JQgq4PsaolUZCHee4ikZANZBsJq1yoLZBZCHXX25AZBSbZANX9HF9vBAi1ZCNJKwACZAhiLh3GZCgloEOz0ZD&fields=id,name,birthday')
     # ap response123.body#, response.code, response.message, response.headers.inspect
-    p session
-    @oauth = Koala::Facebook::OAuth.new(ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'])
-    p @oauth
-    p @oauth.get_user_info_from_cookies(cookies)
-    # p @access_token = @oauth.get_user_info_from_cookies(cookies)['access_token'] if @oauth.get_user_info_from_cookies(cookies)
+    # p '*'*50
+    # p @oauth = Koala::Facebook::OAuth.new(ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'])#, ENV['FACEBOOK_CALLBACK_URL'])
+    # p '*'*50
+    # if session
+    #   p "Session here!!!!!!!!!!!!!!!!!!!!!!"
+    # end
+    # # p cookies
+    # p '*'*50
+    # # @oauth.get_user_info_from_cookies(cookies)
+    # # @access_token = @oauth.get_user_info_from_cookies(cookies)['access_token'] if @oauth.get_user_info_from_cookies(cookies)
+    # # get email address with access_token
+    # @graph = Koala::Facebook::API.new(@access_token)
+    # p @graph
+    p '*'*50
+    p session[:oauth] = Koala::Facebook::OAuth.new(ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'], ENV['FACEBOOK_CALLBACK_URL'])
+    p '*'*50
+    p @auth_url = session[:oauth].url_for_oauth_code(permissions: "read_stream,email")
   end
 
   # GET /todos/1
