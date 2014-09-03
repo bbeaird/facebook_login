@@ -1,5 +1,5 @@
 class TodosController < ApplicationController
-  before_action :set_todo, only: [:show, :edit, :update, :destroy]
+  # before_action :set_todo, only: [:show, :edit, :update, :destroy]
 
   # GET /todos
   # GET /todos.json
@@ -33,6 +33,15 @@ class TodosController < ApplicationController
     p session[:oauth] = Koala::Facebook::OAuth.new(ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'], ENV['FACEBOOK_CALLBACK_URL'])
     p '*'*50
     p @auth_url = session[:oauth].url_for_oauth_code(permissions: "read_stream,email")
+  end
+
+  def callback
+    if params[:code]
+      session[:access_token] = session[:oauth].get_access_token(params[:code])
+    end
+
+    @api = Koala::Facebook::API.new(session[:access_token])
+    @graph_data = @api.get_object("me/statuses", "fields"=>"message")
   end
 
   # GET /todos/1
