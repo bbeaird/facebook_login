@@ -18,14 +18,17 @@ class TodosController < ApplicationController
     @api = Koala::Facebook::API.new(session[:access_token])
     # @graph_data = @api.get_object("me/statuses", "fields"=>"message")
     p @graph_data = @api.get_object("me")
-    @user_graph_data = User.new(graph_response: @graph_data.to_json)
+    @user_graph_data = User.new(graph_response: @graph_data.to_json, facebook_access_token: session[:access_token])
     @user_graph_data.save
+    # redirect_to 'todos#show_some_data'
   end
 
   def show_some_data
-    p @user = JSON.parse(User.first.graph_response)
+    p @user = JSON.parse(User.last.graph_response)
     @birthday = @user["birthday"]
+    @age = ((Time.now - @birthday.to_datetime).to_f/60/60/24/365.25).floor
     @location = @user["location"]["name"]
+    # get zip code?
     @gender = @user["gender"]
   end
 
