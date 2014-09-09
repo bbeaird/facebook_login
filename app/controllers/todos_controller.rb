@@ -1,19 +1,18 @@
 class TodosController < ApplicationController
-  # before_action :set_todo, only: [:show, :edit, :update, :destroy]
+  include HTTParty
 
   def index
     session[:oauth] = Koala::Facebook::OAuth.new(ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'], ENV['FACEBOOK_CALLBACK_URL'])
-    @auth_url = session[:oauth].url_for_oauth_code(permissions: "user_birthday,user_location,user_relationship_details,user_actions.books,user_actions.music,user_actions.movies,read_stream")
-    # delete read_stream permission requeset
+    @auth_url = session[:oauth].url_for_oauth_code(permissions: "user_birthday,user_location,user_relationship_details,user_actions.books,user_actions.music,user_actions.movies")
   end
 
   def callback
     if params[:code]
-      session[:access_token] = session[:oauth].get_access_token(params[:code])
+      p session[:access_token] = session[:oauth].get_access_token(params[:code])
     end
 
     @api = Koala::Facebook::API.new(session[:access_token])
-    @graph_data = @api.get_object("me") # nested hash with data requested from permissions, to_json converts to json and stringifies.
+    p @graph_data = @api.get_object("me") # nested hash with data requested from permissions, to_json converts to json and stringifies.
     @user = User.new(graph_response: @graph_data.to_json, facebook_access_token: session[:access_token])
     @user.save
   end
@@ -23,9 +22,21 @@ class TodosController < ApplicationController
     @birthday = @user["birthday"]
     @age = ((Time.now - @birthday.to_datetime).to_f/60/60/24/365.25).floor
     @location = @user["location"]["name"]
-    # get zip code?
     @gender = @user["gender"]
   end
+
+  def create_an_ad
+    base_uri 'https://graph.facebook.com'
+    options = { }
+    # uses HTTParty module for requests
+    self.class.post('/act_<AD_ACCOUNT_ID>/adgroups', options)
+  end
+
+
+
+
+
+
 
   # GET /todos/1
   # GET /todos/1.json
