@@ -5,34 +5,9 @@ class TodosController < ApplicationController
   # GET /todos.json
   def index
     @todos = Todo.all
-    # @graph = Koala::Facebook::API.new(ENV['FACEBOOK_ACCESS_TOKEN'])
-    # p '*'*50
-    # profile = @graph.get_object('me')
-    # gender_interest = profile['interested_in']
-    # feed = @graph.get_connections("me", "feed")
-    # ap feed
-    # response = HTTParty.get('https://api.stackexchange.com/2.2/questions?site=stackoverflow')
-    # p response
-    # p cookies
-    # response123 = HTTParty.get('https://graph.facebook.com/v2.1/me?access_token=CAACEdEose0cBAEuBZBMbeR5nenG9wKZCKP8fSWgCpGlntrQ1TuciOa3wj0pi4dFeI9nRmXZCuYMXc7MkoSnszjWsoy3Jt9O6mG7PD9RbZCXEMlMDuFntaKO2ZAYSnwVamWpIiU3m8avjz9OqG2xqwE9JQgq4PsaolUZCHee4ikZANZBsJq1yoLZBZCHXX25AZBSbZANX9HF9vBAi1ZCNJKwACZAhiLh3GZCgloEOz0ZD&fields=id,name,birthday')
-    # ap response123.body#, response.code, response.message, response.headers.inspect
-    # p '*'*50
-    # p @oauth = Koala::Facebook::OAuth.new(ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'])#, ENV['FACEBOOK_CALLBACK_URL'])
-    # p '*'*50
-    # if session
-    #   p "Session here!!!!!!!!!!!!!!!!!!!!!!"
-    # end
-    # # p cookies
-    # p '*'*50
-    # # @oauth.get_user_info_from_cookies(cookies)
-    # # @access_token = @oauth.get_user_info_from_cookies(cookies)['access_token'] if @oauth.get_user_info_from_cookies(cookies)
-    # # get email address with access_token
-    # @graph = Koala::Facebook::API.new(@access_token)
-    # p @graph
-    p '*'*50
     p session[:oauth] = Koala::Facebook::OAuth.new(ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'], ENV['FACEBOOK_CALLBACK_URL'])
-    p '*'*50
-    p @auth_url = session[:oauth].url_for_oauth_code(permissions: "read_stream,email")
+    p @auth_url = session[:oauth].url_for_oauth_code(permissions: "user_birthday,user_location,user_relationship_details,user_actions.books,user_actions.music,user_actions.movies,read_stream")
+    # can delete read_stream permission requeset
   end
 
   def callback
@@ -41,7 +16,14 @@ class TodosController < ApplicationController
     end
 
     @api = Koala::Facebook::API.new(session[:access_token])
-    @graph_data = @api.get_object("me/statuses", "fields"=>"message")
+    # @graph_data = @api.get_object("me/statuses", "fields"=>"message")
+    p @graph_data = @api.get_object("me")
+    @user_graph_data = User.new(graph_response: @graph_data.to_s)
+    @user_graph_data.save
+  end
+
+  def show_some_data
+
   end
 
   # GET /todos/1

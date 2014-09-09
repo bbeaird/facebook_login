@@ -2,6 +2,7 @@ FacebookLogin::Application.routes.draw do
 
   root to: 'todos#index'
   get 'todos/callback', to: 'todos#callback'
+  get 'todos/show-some-data', to: 'todos#show_some_data'
   resources :todos
 
 
