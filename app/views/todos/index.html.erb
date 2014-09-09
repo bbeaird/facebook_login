@@ -1,31 +1,4 @@
-<h1>Listing todos</h1>
+<h1><%= link_to 'Login with Facebook!!!!!', @auth_url, class: "button" %></h1>
 
-<%= link_to 'Login with Facebook!!!!!', @auth_url, class: "button" %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Content</th>
-      <th>Done?</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @todos.each do |todo| %>
-      <tr>
-        <td><%= todo.content %></td>
-        <td><%= todo.done? %></td>
-        <td><%= link_to 'Show', todo %></td>
-        <td><%= link_to 'Edit', edit_todo_path(todo) %></td>
-        <td><%= link_to 'Destroy', todo, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Todo', new_todo_path %>
